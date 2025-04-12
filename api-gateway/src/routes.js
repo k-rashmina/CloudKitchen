@@ -9,7 +9,7 @@ const router = express.Router();
 router.use(
   "/restaurant",
   createProxyMiddleware({
-    target: "http://restaurant-service:5002",
+    target: process.env.RESTAURANT_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
       "^/restaurant": "",
@@ -20,7 +20,7 @@ router.use(
 router.use(
   "/order",
   createProxyMiddleware({
-    target:"http://order-service:5003",
+    target:process.env.ORDER_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
       "^/order": "",
@@ -31,7 +31,7 @@ router.use(
 router.use(
   "/delivery",
   createProxyMiddleware({
-    target: "http://delivery-service:5004",
+    target: process.env.DELIVERY_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
       "^/delivery": "",
@@ -42,7 +42,7 @@ router.use(
 router.use(
   "/auth-service",
   createProxyMiddleware({
-    target: "http://auth-service:5001",
+    target: process.env.AUTH_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: { "^/auth-service": "" },
     // Fix the request body for POST requests
@@ -55,7 +55,7 @@ router.use(
 router.use(
   "/payment",
   createProxyMiddleware({
-    target: "http://payment-service:5006",
+    target: process.env.PAYMENT_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: { "^/payment": "" },
   })
@@ -64,7 +64,7 @@ router.use(
 router.use(
   "/notification",  
   createProxyMiddleware({
-    target: "http://notification-service:5005",
+    target: process.env.NOTIFICATION_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: { "^/notification": "" },
   })
