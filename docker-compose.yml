@@ -24,7 +24,7 @@ services:
       - payment-service
       - restaurant-service
     env_file:
-      - .env
+      - ./api-gateway/.env
 
   auth-service:
     build: ./auth-service
@@ -34,7 +34,7 @@ services:
     depends_on:
       - rabbitmq
     env_file:
-      - .env
+      - ./auth-service/.env
 
   delivery-service:
     build: ./delivery-service
@@ -44,7 +44,7 @@ services:
     depends_on:
       - rabbitmq
     env_file:
-      - .env
+      - ./delivery-service/.env
 
   notification-service:
     build: ./notification-service
@@ -54,7 +54,7 @@ services:
     depends_on:
       - rabbitmq
     env_file:
-      - .env
+      - ./notification-service/.env
 
   order-service:
     build: ./order-service
@@ -64,7 +64,7 @@ services:
     depends_on:
       - rabbitmq
     env_file:
-      - .env
+      - ./order-service/.env
 
   payment-service:
     build: ./payment-service
@@ -74,7 +74,7 @@ services:
     depends_on:
       - rabbitmq
     env_file:
-      - .env
+      - ./payment-service/.env
 
   restaurant-service:
     build: ./restaurant-service
@@ -84,4 +84,4 @@ services:
     depends_on:
       - rabbitmq
     env_file:
-      - .env
+      - ./restaurant-service/.env
