@@ -2,13 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const { connectRabbitMQ } = require("../utils/rabbitmq");
+const { connectRabbitMQ } = require("./utils/rabbitmq");
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:8000" })); // Gateway URL
+app.use(cors({ origin: "http://localhost:3000" })); // Gateway URL
 
 // Connect to RabbitMQ
 connectRabbitMQ();
@@ -29,6 +29,6 @@ mongoose
     process.exit(1); // Exit if database connection fails
   });
 
-app.use("/user", require("../routes/authRoutes"));
+app.use("/user", require("./routes/authRoutes"));
 
 app.get("/", (req, res) => res.send("Auth Service Running"));
