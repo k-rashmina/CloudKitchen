@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:8000" })); // Gateway URL
+app.use(cors({ origin: "http://localhost:3000" })); // Gateway URL
 
 // Connect to RabbitMQ
 // connectRabbitMQ();
@@ -30,3 +30,18 @@ mongoose
   });
 
 app.get("/", (req, res) => res.send("Order Service Running"));
+
+
+app.use("/test", (req, res) => {
+  const userId = req.headers["x-user-id"];
+  const role = req.headers["x-user-role"];
+  const email = req.headers["x-user-email"];
+  
+
+  if (!userId) return res.status(401).json({ message: "User ID not found in request" });
+
+  // Use the userId to create an order
+  res.json({ message: "Order created for user", userId,
+    role,email
+   });
+});
