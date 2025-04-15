@@ -6,7 +6,7 @@ const User = require("../models/User");
 
 const generateAccessToken = (user) => {
     return jwt.sign(
-        { id: user._id, role: user.role, name: user.name, email: user.email },
+        { id: user._id, role: user.role,email: user.email },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME } 
     );

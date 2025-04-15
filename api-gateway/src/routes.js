@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const { createProxyMiddleware, fixRequestBody } = require("http-proxy-middleware");
+const { createProxyMiddleware, fixRequestBody} = require("http-proxy-middleware");
+const authenticateUser = require("./middleware/authVerify");
 
 dotenv.config();
 
@@ -17,16 +18,22 @@ router.use(
   })
 );
 
+// Protected Routes (use middleware)
+router.use("/order-service", authenticateUser); // validate first
 router.use(
-  "/order",
+  "/order-service",
   createProxyMiddleware({
-    target:process.env.ORDER_SERVICE_URL,
+    target: process.env.ORDER_SERVICE_URL,
     changeOrigin: true,
-    pathRewrite: {
-      "^/order": "",
-    },
+    pathRewrite: { "^/order-service": "" },
+    on:{
+      proxyReq:fixRequestBody
+    }
   })
 );
+
+
+
 
 router.use(
   "/delivery",
