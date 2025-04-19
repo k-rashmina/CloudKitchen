@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delivery-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: delivery
+  template:
+    metadata:
+      labels:
+        app: delivery
+    spec:
+      containers:
+        - name: delivery
+          image: krashmina612/cloudkitchen-delivery-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5004
+          env:
+            - name: PORT
+              value: "5004"
+            - name: MONGO_URI
+              value: "mongodb+srv://krashmina612:ck1234@ck-cluster.ftvzrdo.mongodb.net/CK-DB?retryWrites=true&w=majority"
+            - name: RABBITMQ_URL
+              value: "amqp://rabbitmq:5672"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: delivery-service
+spec:
+  selector:
+    app: delivery
+  ports:
+    - protocol: TCP
+      port: 5004
+      targetPort: 5004
+  type: ClusterIP
