@@ -18,4 +18,23 @@ const handleOrderCreation = async ({ userId, restaurantId, items, totalAmount })
   return savedOrder;
 };
 
-module.exports = { handleOrderCreation };
+
+
+  
+  const handleOrderStatusUpdate = async (orderId, status) => {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
+  
+    return updatedOrder;
+  };
+  
+  module.exports = {
+    handleOrderCreation,
+    handleOrderStatusUpdate,
+  };
+
+
+
