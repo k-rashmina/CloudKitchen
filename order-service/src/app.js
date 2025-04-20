@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-// const { connectRabbitMQ } = require("../utils/rabbitmq");
+const { connectRabbitMQ, publishToQueue } = require("./utils/rabbitmq");
 
 dotenv.config();
 
@@ -30,9 +30,10 @@ mongoose
   });
 
 app.get("/", (req, res) => res.send("Order Service Running"));
+app.use("/order", require("./routes/orderRoutes"));
 
 
-app.use("/test", (req, res) => {
+app.post("/test", (req, res) => {
   const userId = req.headers["x-user-id"];
   const role = req.headers["x-user-role"];
   const email = req.headers["x-user-email"];
@@ -40,8 +41,10 @@ app.use("/test", (req, res) => {
 
   if (!userId) return res.status(401).json({ message: "User ID not found in request" });
 
+  const { restaurantId, items, totalAmount } = req.body;
+
   // Use the userId to create an order
-  res.json({ message: "Order created for user", userId,
-    role,email
+  res.json({ message: "Order tested work for user", userId,
+    role,email,restaurantId, items, totalAmount
    });
 });
