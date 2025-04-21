@@ -1,4 +1,4 @@
-const { handleOrderCreation , handleOrderStatusUpdate } = require("../services/orderService");
+const { handleOrderCreation , handleOrderStatusUpdate ,getUserOrdersFromDB } = require("../services/orderService");
 
 const createOrder = async (req, res) => {
   try {
@@ -40,4 +40,23 @@ const updateOrderStatus = async (req, res) => {
     }
   };
 
-module.exports = { createOrder ,updateOrderStatus };
+  const getOrdersByUser = async (req, res) => {
+    try {
+      const userId = req.headers["x-user-id"];
+      if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+  
+      const orders = await getUserOrdersFromDB(userId);
+  
+      res.status(200).json({ orders });
+    } catch (error) {
+      console.error("Get User Orders Error:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  };
+
+
+
+
+module.exports = { createOrder ,updateOrderStatus ,getOrdersByUser};

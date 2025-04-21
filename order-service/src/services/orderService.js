@@ -30,10 +30,21 @@ const handleOrderCreation = async ({ userId, restaurantId, items, totalAmount })
   
     return updatedOrder;
   };
+
+  const getUserOrdersFromDB = async (userId) => {
+    return await Order.find({ userId });
+  };
+
+
+
+
+
+
   
   module.exports = {
     handleOrderCreation,
     handleOrderStatusUpdate,
+    getUserOrdersFromDB,
   };
 
 
