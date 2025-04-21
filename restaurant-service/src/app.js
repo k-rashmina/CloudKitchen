@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 // const { connectRabbitMQ } = require("../utils/rabbitmq");
+const routes = require("./routes");
+const { MonitorRestaurantJobs } = require("./services/restaurant-services");
 
 dotenv.config();
 
@@ -20,13 +22,15 @@ mongoose
     console.log("✅ MongoDB Connected");
     // Start the server only if MongoDB is connected
     const PORT = process.env.PORT || 5002;
-    app.listen(PORT, () =>
-      console.log(`🚀 Restaurant Service running on port ${PORT}`)
-    );
+    app.listen(PORT, () => {
+      console.log(`🚀 Restaurant Service running on port ${PORT}`);
+      MonitorRestaurantJobs();
+    });
   })
   .catch((err) => {
     console.error("❌ MongoDB Connection Error:", err);
     process.exit(1); // Exit if database connection fails
   });
 
+app.use("/", routes);
 app.get("/", (req, res) => res.send("Restaurant Service Running"));
