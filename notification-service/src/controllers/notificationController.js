@@ -2,21 +2,30 @@ const notificationService = require('../services/notificationService');
 
 const sendOrderConfirmation = async (req, res) => {
   try {
-    const { userId, orderId } = req.body;
+    const { userId, ...orderDetails } = req.body;
 
-
-    if (!userId || !orderId) {
-      return res.status(400).json({ error: "Missing userId or orderId" });
+    if (!userId || !orderDetails?._id) {
+      return res.status(400).json({ 
+        error: "Missing required fields",
+        details: {
+          required: ["userId", "_id", "items", "totalAmount"]
+        }
+      });
     }
 
-    await notificationService.sendOrderConfirmation(userId, orderId);
-    res.status(200).json({ message: "Notification sent successfully" });
-  } catch (error) {
-    console.error('Controller Error:', {
-      message: error.message,
-      stack: error.stack // Full error stack trace
+    await notificationService.sendOrderConfirmation(userId, orderDetails);
+    
+    // Simplified success response
+    res.status(200).json({ 
+      message: "Notification sent successfully" 
     });
-    res.status(500).json({ error: error.message });
+  } catch (error) {
+    console.error('[CONTROLLER ERROR]', error);
+    res.status(500).json({ 
+      error: error.message,
+      // Include stack trace only in development
+      ...(process.env.NODE_ENV === 'development' && { stack: error.stack }) 
+    });
   }
 };
 
