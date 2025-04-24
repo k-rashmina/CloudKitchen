@@ -10,8 +10,8 @@ const {
   updateMenuItem,
   deleteMenuItem,
 } = require("../data-access/restaurant-dao");
-
 const cron = require("node-cron");
+const axios = require("axios");
 
 const getAllRestaurantsService = async () => {
   return await getAllRestaurants();
@@ -51,7 +51,7 @@ const deleteMenuItemService = async (menuItemId) => {
 
 const MonitorRestaurantJobs = async () => {
   try {
-    cron.schedule("*/10 * * * * *", async () => {
+    cron.schedule("* * * * *", async () => {
       console.log("🔍 Monitoring Restaurant Jobs");
 
       const restaurantJobs = await getAllReadyRestaurantJobs();

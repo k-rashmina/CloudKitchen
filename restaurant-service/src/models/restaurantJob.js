@@ -12,6 +12,11 @@ const restaurantJobSchema = new mongoose.Schema(
       required: true,
       ref: "Restaurant",
     },
+    orderId: {
+      type: mongoose.SchemaTypes.ObjectId,
+      required: true,
+      ref: "orders",
+    },
     items: [
       {
         itemId: {

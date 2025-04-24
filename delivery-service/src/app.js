@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const router = require("./routes");
 // const { connectRabbitMQ } = require("../utils/rabbitmq");
 
 dotenv.config();
@@ -29,4 +30,5 @@ mongoose
     process.exit(1); // Exit if database connection fails
   });
 
-app.get("/", (req, res) => res.send("Delivery Service Running"));
+app.use("/", router);
+app.get("/test", (req, res) => res.send("Delivery Service Running"));

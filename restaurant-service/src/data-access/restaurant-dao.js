@@ -7,7 +7,7 @@ const getAllRestaurants = async () => {
 };
 
 const getAllReadyRestaurantJobs = async () => {
-  return await RestaurantJob.find({ status: "ready" }).populate("itemId");
+  return await RestaurantJob.find({ status: "ready" }).populate("items.itemId");
 };
 
 const createRestaurant = async (data) => {

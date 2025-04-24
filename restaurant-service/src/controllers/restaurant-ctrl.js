@@ -9,11 +9,21 @@ const {
   updateMenuItemService,
   deleteMenuItemService,
 } = require("../services/restaurant-services");
+const { getAllReadyRestaurantJobs } = require("../data-access/restaurant-dao");
 const axios = require("axios");
 
 const getAllRestaurantsCtrl = async (req, res) => {
   try {
     const data = await getAllRestaurantsService();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const getAllRestaurantJobsCtrl = async (req, res) => {
+  try {
+    const data = await getAllReadyRestaurantJobs();
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -97,6 +107,7 @@ const deleteMenuItemCtrl = async (req, res) => {
 
 module.exports = {
   getAllRestaurantsCtrl,
+  getAllRestaurantJobsCtrl,
   createRestaurantCtrl,
   createRestaurantJobCtrl,
   updateRestaurantCtrl,

@@ -24,7 +24,7 @@ mongoose
     const PORT = process.env.PORT || 5002;
     app.listen(PORT, () => {
       console.log(`🚀 Restaurant Service running on port ${PORT}`);
-      MonitorRestaurantJobs();
+      // MonitorRestaurantJobs();
     });
   })
   .catch((err) => {

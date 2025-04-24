@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllRestaurantsCtrl,
+  getAllRestaurantJobsCtrl,
   createRestaurantCtrl,
   createRestaurantJobCtrl,
   updateRestaurantCtrl,
@@ -13,6 +14,7 @@ const {
 } = require("./controllers/restaurant-ctrl");
 
 router.get("/restaurants", getAllRestaurantsCtrl);
+router.get("/restaurantJobs", getAllRestaurantJobsCtrl);
 router.post("/restaurants", createRestaurantCtrl);
 router.post("/restaurantsJob", createRestaurantJobCtrl);
 router.put("/restaurants/:id", updateRestaurantCtrl);
