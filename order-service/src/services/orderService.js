@@ -2,7 +2,13 @@ const Order = require("../models/Order");
 const { publishToQueue } = require("../utils/rabbitmq");
 const { notifyRestaurantService } = require("../rest-client/restaurentApi");
 
-const handleOrderCreation = async ({ userId, restaurantId, items, totalAmount,status }) => {
+const handleOrderCreation = async ({
+  userId,
+  restaurantId,
+  items,
+  totalAmount,
+  status,
+}) => {
   const newOrder = new Order({
     userId,
     restaurantId,
@@ -16,40 +22,30 @@ const handleOrderCreation = async ({ userId, restaurantId, items, totalAmount,st
   // Publish to RabbitMQ
   publishToQueue("order_created", savedOrder);
 
-   // Notify Restaurant Service
-   await notifyRestaurantService(savedOrder);
+  // Notify Restaurant Service
+  await notifyRestaurantService(savedOrder);
 
   return savedOrder;
 };
 
+const handleOrderStatusUpdate = async (orderId, status) => {
+  const updatedOrder = await Order.findByIdAndUpdate(
+    orderId,
+    { status },
+    { new: true }
+  );
 
+  return updatedOrder;
+};
 
-  
-  const handleOrderStatusUpdate = async (orderId, status) => {
-    const updatedOrder = await Order.findByIdAndUpdate(
-      orderId,
-      { status },
-      { new: true }
-    );
-  
-    return updatedOrder;
-  };
+const getUserOrdersFromDB = async (userId) => {
+  return await Order.find({ userId })
+    .populate("items.itemId")
+    .populate("restaurantId", "name address");
+};
 
-  const getUserOrdersFromDB = async (userId) => {
-    return await Order.find({ userId });
-  };
-
-
-
-
-
-
-  
-  module.exports = {
-    handleOrderCreation,
-    handleOrderStatusUpdate,
-    getUserOrdersFromDB,
-  };
-
-
-
+module.exports = {
+  handleOrderCreation,
+  handleOrderStatusUpdate,
+  getUserOrdersFromDB,
+};
