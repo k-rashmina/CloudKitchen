@@ -41,8 +41,8 @@ const createRestaurantCtrl = async (req, res) => {
 
 const createRestaurantJobCtrl = async (req, res) => {
   try {
-    const newRestaurant = await createRestaurantJobService(req.body);
-    res.status(201).json(newRestaurant);
+    const newRestaurantJob = await createRestaurantJobService(req.body);
+    res.status(201).json(newRestaurantJob);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

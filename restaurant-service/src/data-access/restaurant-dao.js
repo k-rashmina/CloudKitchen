@@ -7,7 +7,11 @@ const getAllRestaurants = async () => {
 };
 
 const getAllReadyRestaurantJobs = async () => {
-  return await RestaurantJob.find({ status: "ready" }).populate("items.itemId");
+  return await RestaurantJob.find({ status: "ready" }).populate([
+    "items.itemId",
+    "userId",
+    "restaurantId",
+  ]);
 };
 
 const createRestaurant = async (data) => {
@@ -55,6 +59,14 @@ const deleteMenuItem = async (id) => {
   }
 };
 
+const setRestaurantJobStatus = async (jobId, status) => {
+  return await RestaurantJob.findByIdAndUpdate(
+    jobId,
+    { status: status },
+    { new: true }
+  );
+};
+
 module.exports = {
   getAllRestaurants,
   getAllReadyRestaurantJobs,
@@ -66,4 +78,5 @@ module.exports = {
   addMenuItem,
   updateMenuItem,
   deleteMenuItem,
+  setRestaurantJobStatus,
 };

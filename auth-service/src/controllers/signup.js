@@ -3,7 +3,7 @@ const User = require("../models/User");
 
 const userSignup = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+      const { name, email, password, role, location } = req.body;
 
         // Check if username or email is already taken
         const existingUser = await User.findOne({ $or: [{ name }, { email }] });
@@ -17,10 +17,11 @@ const userSignup = async (req, res) => {
 
         // Create new user
         const newUser = new User({
-            name,
-            email,
-            password: hashedPassword,
-            role: role
+          name,
+          email,
+          password: hashedPassword,
+          role: role,
+          location: location,
         });
 
         await newUser.save();
