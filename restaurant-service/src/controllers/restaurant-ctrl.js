@@ -11,6 +11,8 @@ const {
 } = require("../services/restaurant-services");
 const { getAllReadyRestaurantJobs } = require("../data-access/restaurant-dao");
 const axios = require("axios");
+const mongoose = require("mongoose");
+
 
 const getAllRestaurantsCtrl = async (req, res) => {
   try {
@@ -39,14 +41,69 @@ const createRestaurantCtrl = async (req, res) => {
   }
 };
 
+// const createRestaurantJobCtrl = async (req, res) => {
+//   try {
+//     const newRestaurant = await createRestaurantJobService(req.body);
+//     res.status(201).json(newRestaurant);
+//   } catch (err) {
+//     res.status(400).json({ error: err.message });
+//   }
+// };
+
 const createRestaurantJobCtrl = async (req, res) => {
   try {
-    const newRestaurantJob = await createRestaurantJobService(req.body);
-    res.status(201).json(newRestaurantJob);
+    const {
+      userId,
+      restaurantId,
+      orderId,
+      items,
+      totalAmount,
+      status
+    } = req.body;
+
+    // Validate required fields
+    if (!userId || !restaurantId || !orderId || !items || !totalAmount || !status) {
+      throw new Error('Missing required fields');
+    }
+
+    // Validate items array
+    if (!Array.isArray(items) || items.length === 0) {
+      throw new Error('Items must be a non-empty array');
+    }
+
+    // Helper function to validate and convert ID
+    const toObjectId = (id, fieldName) => {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error(`Invalid ${fieldName} ID`);
+      }
+      return new mongoose.Types.ObjectId(id);
+    };
+
+    const transformedPayload = {
+      userId: toObjectId(userId, 'user'),
+      restaurantId: toObjectId(restaurantId, 'restaurant'),
+      orderId: toObjectId(orderId, 'order'),
+      items: items.map(item => {
+        if (!item.itemId || !item.quantity) {
+          throw new Error('Each item must have itemId and quantity');
+        }
+        return {
+          itemId: toObjectId(item.itemId, 'item'),
+          quantity: item.quantity
+        };
+      }),
+      totalAmount,
+      status
+    };
+
+    const newRestaurant = await createRestaurantJobService(transformedPayload);
+    res.status(201).json(newRestaurant);
   } catch (err) {
+    console.error("Error creating restaurant job:", err);
     res.status(400).json({ error: err.message });
   }
 };
+
 
 const updateRestaurantCtrl = async (req, res) => {
   try {
