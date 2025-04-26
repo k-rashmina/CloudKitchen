@@ -8,7 +8,7 @@ const restaurantSchema = new mongoose.Schema(
       trim: true,
     },
     ownerId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
     description: {
@@ -21,6 +21,10 @@ const restaurantSchema = new mongoose.Schema(
     },
     contactNumber: {
       type: String,
+    },
+    imageUrl: {
+      type: String,
+      default: "",
     },
     isAvailable: {
       type: Boolean,

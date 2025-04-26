@@ -77,14 +77,14 @@ const MonitorRestaurantJobs = async () => {
       console.log("🔍 Monitoring Restaurant Jobs");
 
       const restaurantJobs = await getAllReadyRestaurantJobs();
-      console.log("restaurantJobs - ", restaurantJobs);
+      // console.log("restaurantJobs - ", restaurantJobs);
 
-      //notification api call
       restaurantJobs.map(async (job) => {
         await setRestaurantJobStatusService(job._id, "done");
         console.log("Restaurant job status changed!");
+        // console.log("job - ", job);
 
-        console.log("job - ", job);
+        // //notification api call
         //   const notificationResponse = await axios.post(
         //     `${notificationServiceUrl}/api/notifications/order-confirmation`
         //   );
@@ -102,11 +102,11 @@ const MonitorRestaurantJobs = async () => {
           }
         );
 
-        // order status change api call
-        await axios.patch(`${orderServiceUrl}/order/status`, {
-          orderId: restaurantJob.orderId,
-          status: "preparing",
-        });
+        // // order status change api call
+        // await axios.patch(`${orderServiceUrl}/order/status`, {
+        //   orderId: job.orderId,
+        //   status: "searching-drivers",
+        // });
       });
     });
   } catch (e) {

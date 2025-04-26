@@ -17,6 +17,12 @@ const {
 
 const client = new Client({});
 
+const orderServiceUrl =
+  process.env.ORDER_SERVICE_URL || `http://localhost:5003`;
+
+const notificationServiceUrl =
+  process.env.NOTIFICATION_SERVICE_URL || `http://localhost:5005`;
+
 const createDeliveryService = async (data) => {
   return await createDelivery(data);
 };
@@ -93,6 +99,22 @@ const MonitorDeliveryJobs = async () => {
         delivery.status = "assigned";
 
         await updateDeliveryJobService(delivery);
+
+        // order status change api call
+        await axios.patch(`${orderServiceUrl}/order/status`, {
+          orderId: delivery.orderId,
+          status: "on-the-way",
+        });
+
+        // //notification api call
+        // const notificationResponse = await axios.post(
+        //   `${notificationServiceUrl}/api/notifications/dnotification`,
+        //   {
+        //     driverId: delivery.driverId,
+        //     deliveryJobId: delivery._id
+        //   }
+        // );
+
       });
     });
   } catch (e) {
@@ -107,7 +129,7 @@ const getDistanceValues = async (origin, destinations) => {
         origins: origin,
         destinations: destinations,
         travelMode: "DRIVING",
-        key: process.env.GOOGLE_API_KEY,
+        key: process.env.GOOGLE_API_KEY || "AIzaSyCjgDOFzVZR8aWVM4SoZMRO0Hw4Lb883Ec",
       },
     });
 
