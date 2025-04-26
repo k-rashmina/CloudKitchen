@@ -1,8 +1,12 @@
+const { Client } = require("@googlemaps/google-maps-services-js");
+const cron = require("node-cron");
 const {
   createDelivery,
   assignDriver,
   updateStatus,
   getById,
+  getPendingDeliveries,
+  updateDeliveryJob,
 } = require("../data-access/DeliveryJobDB");
 const {
   getAvailable,
@@ -10,6 +14,8 @@ const {
   markAssigned,
   updateLocation,
 } = require("../data-access/DriverDB");
+
+const client = new Client({});
 
 const createDeliveryService = async (data) => {
   return await createDelivery(data);
@@ -27,6 +33,10 @@ const updateStatusService = async (deliveryId, status) => {
   return await updateStatus(deliveryId, status);
 };
 
+const updateDeliveryJobService = async (deliveryJob) => {
+  return await updateDeliveryJob(deliveryJob);
+};
+
 const getDeliveryByIdService = async (id) => {
   return await getById(id);
 };
@@ -39,6 +49,76 @@ const updateDriverLocationService = async (driverId, coordinates) => {
   return await updateLocation(driverId, coordinates);
 };
 
+const MonitorDeliveryJobs = async () => {
+  try {
+    cron.schedule("*/15 * * * * *", async () => {
+      const pendingDeliveries = await getPendingDeliveries();
+      // console.log("pendingDeliveries - ", pendingDeliveries);
+
+      pendingDeliveries.forEach(async (delivery) => {
+        const availableDrivers = await getAvailableDriversService();
+        // console.log("availableDrivers - ", availableDrivers);
+
+        if (availableDrivers.length == 0) {
+          return;
+        }
+
+        const origins = [delivery.pickupLocation];
+        let destinations = [];
+        availableDrivers.forEach((driver) => {
+          destinations.push(driver.currentLocation);
+        });
+
+        // console.log("origins - ", origins);
+        // console.log("destinations - ", destinations);
+
+        const elems = await getDistanceValues(origins, destinations);
+        // console.log("elems - ", elems);
+
+        let indexWithMinimumDistanceValue = 0;
+
+        for (let i = 0; i < elems.length; i++) {
+          if (
+            elems[i].distance.value <
+            elems[indexWithMinimumDistanceValue].distance.value
+          ) {
+            indexWithMinimumDistanceValue = i;
+          }
+        }
+
+        const nearestDriver =
+          availableDrivers[indexWithMinimumDistanceValue]._id;
+
+        delivery.driverId = nearestDriver;
+        delivery.status = "assigned";
+
+        await updateDeliveryJobService(delivery);
+      });
+    });
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+
+const getDistanceValues = async (origin, destinations) => {
+  try {
+    const response = await client.distancematrix({
+      params: {
+        origins: origin,
+        destinations: destinations,
+        travelMode: "DRIVING",
+        key: process.env.GOOGLE_API_KEY,
+      },
+    });
+
+    // console.log("response.data - ", response.data);
+
+    return response.data.rows[0].elements;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 module.exports = {
   createDeliveryService,
   assignDriverService,
@@ -46,4 +126,5 @@ module.exports = {
   getDeliveryByIdService,
   getAvailableDriversService,
   updateDriverLocationService,
+  MonitorDeliveryJobs,
 };

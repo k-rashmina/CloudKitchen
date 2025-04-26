@@ -51,6 +51,7 @@ const deliverySchema = new mongoose.Schema(
     },
     estimatedTime: {
       type: Date,
+      default: null,
     },
   },
   { timestamps: true }

@@ -24,7 +24,7 @@ mongoose
     const PORT = process.env.PORT || 5002;
     app.listen(PORT, () => {
       console.log(`🚀 Restaurant Service running on port ${PORT}`);
-      // MonitorRestaurantJobs();
+      MonitorRestaurantJobs();
     });
   })
   .catch((err) => {
@@ -33,4 +33,4 @@ mongoose
   });
 
 app.use("/", routes);
-app.get("/", (req, res) => res.send("Restaurant Service Running"));
+app.get("/test", (req, res) => res.send("Restaurant Service Running"));

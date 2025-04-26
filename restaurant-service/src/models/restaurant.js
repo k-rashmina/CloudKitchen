@@ -8,7 +8,7 @@ const restaurantSchema = new mongoose.Schema(
       trim: true,
     },
     ownerId: {
-      type: String, // UUID or ObjectId from Auth Service
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     description: {
