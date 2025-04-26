@@ -22,6 +22,10 @@ const restaurantSchema = new mongoose.Schema(
     contactNumber: {
       type: String,
     },
+    imageUrl: {
+      type: String,
+      default: "",
+    },
     isAvailable: {
       type: Boolean,
       default: true,
