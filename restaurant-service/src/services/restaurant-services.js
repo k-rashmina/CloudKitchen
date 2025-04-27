@@ -35,10 +35,10 @@ const createRestaurantService = async (restaurantData) => {
 const createRestaurantJobService = async (restaurantJobData) => {
   const restaurantJob = await createRestaurantJob(restaurantJobData);
 
-  // await axios.patch(`${orderServiceUrl}/order/status`, {
-  //   orderId: restaurantJob.orderId,
-  //   status: "preparing",
-  // });
+  await axios.patch(`${orderServiceUrl}/order/status`, {
+    orderId: restaurantJob.orderId,
+    status: "preparing",
+  });
 
   return restaurantJob;
 };
