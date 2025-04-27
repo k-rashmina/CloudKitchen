@@ -38,9 +38,9 @@ const userSignin = (allowedRoles) => async (req, res) => {
         }
 
         // Check if the user's role is allowed
-        if (!allowedRoles.includes(user.role)) {
-            return res.status(403).json({ message: "Access Denied: You do not have permission." });
-        }
+        // if (!allowedRoles.includes(user.role)) {
+        //     return res.status(403).json({ message: "Access Denied: You do not have permission." });
+        // }
 
         // Generate access and refresh tokens
         const accessToken = generateAccessToken(user);
