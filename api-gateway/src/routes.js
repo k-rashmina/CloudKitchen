@@ -63,6 +63,7 @@ router.use(
   })
 );
 
+router.use("/payment-service", authenticateUser);
 router.use(
   "/payment-service",
   createProxyMiddleware({
