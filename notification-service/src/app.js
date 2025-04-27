@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:8000" })); // Gateway URL
+app.use(cors({ origin: "http://localhost:5173" })); // Gateway URL
 
 // Routes
 app.use("/api/notifications", notificationRoutes); // Mount notification routes
