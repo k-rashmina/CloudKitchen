@@ -10,7 +10,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors()); // Gateway URL
+app.use(cors({ origin: "http://localhost:5173" })); // Gateway URL
 
 // Connect to RabbitMQ
 // connectRabbitMQ();
