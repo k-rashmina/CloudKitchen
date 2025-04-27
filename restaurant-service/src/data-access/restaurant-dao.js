@@ -55,7 +55,7 @@ const deleteMenuItem = async (id) => {
     await Restaurant.findByIdAndUpdate(menuItem.restaurantId, {
       $pull: { menuItems: id },
     });
-    await menuItem.remove();
+    await MenuItem.findByIdAndDelete(menuItem._id)
   }
 };
 
