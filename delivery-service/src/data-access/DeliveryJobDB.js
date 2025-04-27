@@ -32,6 +32,11 @@ const getById = async (id) => {
     .populate("items.itemId");
 };
 
+const getByOrderId = async (orderId) => {
+  return await Delivery.findOne({orderId: orderId})
+    .populate("driverId")
+};
+
 const getPendingDeliveries = async () => {
   return await Delivery.find({ status: "pending" });
 };
@@ -43,4 +48,5 @@ module.exports = {
   getById,
   getPendingDeliveries,
   updateDeliveryJob,
+  getByOrderId
 };

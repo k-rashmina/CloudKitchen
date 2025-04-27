@@ -5,6 +5,7 @@ const {
   getDeliveryByIdService,
   getAvailableDriversService,
   updateDriverLocationService,
+  getDeliveryByOrderIdService
 } = require("../services/delivery-service");
 const Driver = require("../models/driver");
 
@@ -38,6 +39,15 @@ const updateStatusCtrl = async (req, res) => {
 const getDeliveryCtrl = async (req, res) => {
   try {
     const delivery = await getDeliveryByIdService(req.params.id);
+    res.json(delivery);
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+};
+
+const getDeliveryByOrderCtrl = async (req, res) => {
+  try {
+    const delivery = await getDeliveryByOrderIdService(req.params.oid);
     res.json(delivery);
   } catch (err) {
     res.status(404).json({ error: err.message });
@@ -82,4 +92,5 @@ module.exports = {
   getAvailableDriversCtrl,
   updateDriverLocationCtrl,
   createDriverCtrl,
+  getDeliveryByOrderCtrl
 };

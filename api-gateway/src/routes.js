@@ -37,13 +37,16 @@ router.use(
 
 
 router.use(
-  "/delivery",
+  "/delivery-service",
   createProxyMiddleware({
     target: process.env.DELIVERY_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-      "^/delivery": "",
+      "^/delivery-service": "",
     },
+    on:{
+      proxyReq:fixRequestBody
+    }
   })
 );
 

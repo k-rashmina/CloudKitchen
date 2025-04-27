@@ -7,6 +7,7 @@ const {
   getById,
   getPendingDeliveries,
   updateDeliveryJob,
+  getByOrderId
 } = require("../data-access/DeliveryJobDB");
 const {
   getAvailable,
@@ -45,6 +46,10 @@ const updateDeliveryJobService = async (deliveryJob) => {
 
 const getDeliveryByIdService = async (id) => {
   return await getById(id);
+};
+
+const getDeliveryByOrderIdService = async (orderId) => {
+  return await getByOrderId(orderId);
 };
 
 const getAvailableDriversService = async () => {
@@ -149,4 +154,5 @@ module.exports = {
   getAvailableDriversService,
   updateDriverLocationService,
   MonitorDeliveryJobs,
+  getDeliveryByOrderIdService
 };
