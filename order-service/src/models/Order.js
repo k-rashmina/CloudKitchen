@@ -35,8 +35,8 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["preparing", "searching-drivers", "on-the-way", "delivered", "cancelled"],
-      default: "preparing",
+      enum: ["pending","preparing", "searching-drivers", "on-the-way", "delivered", "cancelled"],
+      default: "pending",
     }
   },
   { timestamps: true }
