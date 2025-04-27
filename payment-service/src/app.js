@@ -25,4 +25,6 @@ mongoose
     process.exit(1);
   });
 
-app.use("/api", routes);
+// app.use("/api", routes);
+
+app.use("/", routes);
