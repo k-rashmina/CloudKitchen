@@ -8,13 +8,16 @@ dotenv.config();
 const router = express.Router();
 
 router.use(
-  "/restaurant",
+  "/restaurant-service",
   createProxyMiddleware({
     target: process.env.RESTAURANT_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-      "^/restaurant": "",
+      "^/restaurant-service": "",
     },
+    on:{
+      proxyReq:fixRequestBody
+    }
   })
 );
 
@@ -70,11 +73,11 @@ router.use(
 );
 
 router.use(
-  "/notification",  
+  "/notification-service",  
   createProxyMiddleware({
     target: process.env.NOTIFICATION_SERVICE_URL,
     changeOrigin: true,
-    pathRewrite: { "^/notification": "" },
+    pathRewrite: { "^/notification-service": "" },
   })
 );
 
