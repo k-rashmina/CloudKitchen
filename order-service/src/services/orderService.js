@@ -44,8 +44,35 @@ const getUserOrdersFromDB = async (userId) => {
     .populate("restaurantId", "name address");
 };
 
+const cancelUserOrder = async (orderId, userId) => {
+  // Find the order first
+  const order = await Order.findById(orderId);
+  
+  if (!order) {
+    return null;
+  }
+
+  // Verify the user owns the order
+  if (order.userId.toString() !== userId) {
+    return null;
+  }
+
+  // Check if order is in a cancellable state
+  // const cancellableStatuses = ["preparing", "searching-drivers"];
+  // if (!cancellableStatuses.includes(order.status)) {
+  //   return null;
+  // }
+
+  // Update the status to cancelled
+  order.status = "cancelled";
+  const updatedOrder = await order.save();
+
+  return updatedOrder;
+};
+
 module.exports = {
   handleOrderCreation,
   handleOrderStatusUpdate,
   getUserOrdersFromDB,
+  cancelUserOrder,
 };
