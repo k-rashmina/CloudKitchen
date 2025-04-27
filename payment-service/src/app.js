@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const routes = require("./routes/index");
 
 dotenv.config();
 
@@ -24,4 +25,4 @@ mongoose
     process.exit(1);
   });
 
-app.get("/", (req, res) => res.send("Payment Service Running"));
+app.use("/api", routes);
