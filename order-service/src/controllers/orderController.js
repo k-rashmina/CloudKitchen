@@ -1,4 +1,4 @@
-const { handleOrderCreation , handleOrderStatusUpdate ,getUserOrdersFromDB } = require("../services/orderService");
+const { handleOrderCreation , handleOrderStatusUpdate ,getUserOrdersFromDB,cancelUserOrder } = require("../services/orderService");
 
 const createOrder = async (req, res) => {
   try {
@@ -57,6 +57,35 @@ const updateOrderStatus = async (req, res) => {
   };
 
 
+  const cancelOrder = async (req, res) => {
+    try {
+      const userId = req.headers["x-user-id"];
+      if (!userId) return res.status(401).json({ message: "Unauthorized" });
+  
+      const { orderId } = req.params;
+  
+      if (!orderId) {
+        return res.status(400).json({ message: "Order ID is required" });
+      }
+  
+      const cancelledOrder = await cancelUserOrder(orderId, userId);
+  
+      if (!cancelledOrder) {
+        return res.status(404).json({ message: "Order not found or cannot be cancelled" });
+      }
+  
+      res.status(200).json({ 
+        message: "Order cancelled successfully", 
+        order: cancelledOrder 
+      });
+    } catch (error) {
+      console.error("Cancel Order Error:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  };
 
 
-module.exports = { createOrder ,updateOrderStatus ,getOrdersByUser};
+
+
+
+module.exports = { createOrder ,updateOrderStatus ,getOrdersByUser , cancelOrder };

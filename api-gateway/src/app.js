@@ -16,7 +16,7 @@ app.use(express.json());
 // Enable CORS for frontend on http://localhost:5173
 app.use(cors({
   origin: "http://localhost:5173",   // allow frontend origin
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  // allowed methods
+  methods: ["GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"],  // allowed methods
   credentials: true,  // if you need to send cookies or auth headers
 }));
 // Mount proxy routes
