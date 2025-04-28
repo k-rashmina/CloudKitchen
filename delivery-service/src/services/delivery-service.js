@@ -16,14 +16,13 @@ const {
   updateLocation,
   getLocation
 } = require("../data-access/DriverDB");
+const axios = require("axios")
 
 const client = new Client({});
 
-const orderServiceUrl =
-  process.env.ORDER_SERVICE_URL || `http://localhost:5003`;
+const orderServiceUrl =`http://order-service:5003`;
 
-const notificationServiceUrl =
-  process.env.NOTIFICATION_SERVICE_URL || `http://localhost:5005`;
+const notificationServiceUrl =`http://notification-service:5005`;
 
 const createDeliveryService = async (data) => {
   return await createDelivery(data);
@@ -116,14 +115,14 @@ const MonitorDeliveryJobs = async () => {
           status: "on-the-way",
         });
 
-        // //notification api call
-        // const notificationResponse = await axios.post(
-        //   `${notificationServiceUrl}/api/notifications/dnotification`,
-        //   {
-        //     driverId: delivery.driverId,
-        //     deliveryJobId: delivery._id
-        //   }
-        // );
+        //notification api call
+        const notificationResponse = await axios.post(
+          `${notificationServiceUrl}/api/notifications/dnotification`,
+          {
+            driverId: delivery.driverId,
+            deliveryJobId: delivery._id
+          }
+        );
 
       });
     });

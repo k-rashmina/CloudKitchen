@@ -15,14 +15,11 @@ const cron = require("node-cron");
 const axios = require("axios");
 const User = require("../models/User");
 
-const notificationServiceUrl =
-  process.env.NOTIFICATION_SERVICE_URL || `http://localhost:5005`;
+const notificationServiceUrl = `http://notification-service:5005`;
 
-const deliveryServiceUrl =
-  process.env.DELIVERY_SERVICE_URL || `http://localhost:5004`;
+const deliveryServiceUrl = `http://delivery-service:5004`;
 
-const orderServiceUrl =
-  process.env.ORDER_SERVICE_URL || `http://localhost:5003`;
+const orderServiceUrl = `http://order-service:5003`;
 
 const getAllRestaurantsService = async () => {
   return await getAllRestaurants();
@@ -84,10 +81,9 @@ const MonitorRestaurantJobs = async () => {
         console.log("Restaurant job status changed!");
         // console.log("job - ", job);
 
-        // //notification api call
-        //   const notificationResponse = await axios.post(
-        //     `${notificationServiceUrl}/api/notifications/order-confirmation`
-        //   );
+        //notification api call
+          const notificationResponse = await axios.post(
+            `${notificationServiceUrl}/api/notifications/order-confirmation`, job);
 
         // delivery api call
         const deliveryResponse = await axios.post(
@@ -102,11 +98,11 @@ const MonitorRestaurantJobs = async () => {
           }
         );
 
-        // // order status change api call
-        // await axios.patch(`${orderServiceUrl}/order/status`, {
-        //   orderId: job.orderId,
-        //   status: "searching-drivers",
-        // });
+        // order status change api call
+        await axios.patch(`${orderServiceUrl}/order/status`, {
+          orderId: job.orderId,
+          status: "searching-drivers",
+        });
       });
     });
   } catch (e) {
