@@ -12,7 +12,7 @@ const notifyRestaurantService = async (order) => {
     orderId: order._id,
     items: formattedItems,
     totalAmount: order.totalAmount,
-    status: order.status,
+    status: "preparing",
   };
 
   try {

@@ -2,9 +2,9 @@ const notificationService = require('../services/notificationService');
 
 const sendOrderConfirmation = async (req, res) => {
   try {
-    const { userId, ...orderDetails } = req.body;
+    const resturantJob = req.body;
 
-    if (!userId || !orderDetails?._id) {
+    if (!resturantJob.userId || !resturantJob?._id) {
       return res.status(400).json({ 
         error: "Missing required fields",
         details: {
@@ -13,7 +13,7 @@ const sendOrderConfirmation = async (req, res) => {
       });
     }
 
-    await notificationService.sendOrderConfirmation(userId, orderDetails);
+    await notificationService.sendOrderConfirmation(resturantJob.userId, resturantJob);
     
     // Simplified success response
     res.status(200).json({ 
