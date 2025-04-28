@@ -5,7 +5,8 @@ const {
   getDeliveryByIdService,
   getAvailableDriversService,
   updateDriverLocationService,
-  getDeliveryByOrderIdService
+  getDeliveryByOrderIdService,
+  getDriverLocationService
 } = require("../services/delivery-service");
 const Driver = require("../models/driver");
 
@@ -75,6 +76,15 @@ const updateDriverLocationCtrl = async (req, res) => {
   }
 };
 
+const getDriverLocationCtrl = async (req, res) => {
+  try {
+    const DriverLocation = await getDriverLocationService(req.params.id);
+    res.json(DriverLocation);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const createDriverCtrl = async (req, res) => {
   try {
     const driver = new Driver(req.body);
@@ -92,5 +102,6 @@ module.exports = {
   getAvailableDriversCtrl,
   updateDriverLocationCtrl,
   createDriverCtrl,
-  getDeliveryByOrderCtrl
+  getDeliveryByOrderCtrl,
+  getDriverLocationCtrl
 };

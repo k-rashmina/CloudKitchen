@@ -26,10 +26,9 @@ const updateDeliveryJob = async (deliveryJob) => {
 
 const getById = async (id) => {
   return await Delivery.findById(id)
-    .populate("driverId")
     .populate("restaurantId")
     // .populate("orderId")
-    .populate("items.itemId");
+    // .populate("items.itemId");
 };
 
 const getByOrderId = async (orderId) => {
