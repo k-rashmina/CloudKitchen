@@ -32,10 +32,7 @@ const getUnreadNotifications = async (req, res) => {
     const driverId = req.params.driverId;
     const notifications = await notificationService.getUnreadNotifications(driverId);
     
-    res.status(200).json({
-      success: true,
-      data: notifications
-    });
+    res.status(200).json(notifications);
   } catch (error) {
     res.status(500).json({
       success: false,
