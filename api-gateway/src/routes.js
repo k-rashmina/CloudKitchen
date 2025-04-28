@@ -1,6 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const { createProxyMiddleware, fixRequestBody} = require("http-proxy-middleware");
+const {
+  createProxyMiddleware,
+  fixRequestBody,
+} = require("http-proxy-middleware");
 const authenticateUser = require("./middleware/authVerify");
 
 dotenv.config();
@@ -15,12 +18,11 @@ router.use(
     pathRewrite: {
       "^/restaurant-service": "",
     },
-    on:{
-      proxyReq:fixRequestBody
-    }
+    on: {
+      proxyReq: fixRequestBody,
+    },
   })
 );
-
 
 // Protected Routes (use middleware)
 router.use("/order-service", authenticateUser); // validate first
@@ -30,14 +32,11 @@ router.use(
     target: process.env.ORDER_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: { "^/order-service": "" },
-    on:{
-      proxyReq:fixRequestBody
-    }
+    on: {
+      proxyReq: fixRequestBody,
+    },
   })
 );
-
-
-
 
 router.use(
   "/delivery-service",
@@ -61,22 +60,27 @@ router.use(
     pathRewrite: { "^/auth-service": "" },
     // Fix the request body for POST requests
     // This is necessary because the auth-service expects a JSON body
-  on:{
-    proxyReq:fixRequestBody
-  }})
+    on: {
+      proxyReq: fixRequestBody,
+    },
+  })
 );
 
+router.use("/payment-service", authenticateUser);
 router.use(
-  "/payment",
+  "/payment-service",
   createProxyMiddleware({
     target: process.env.PAYMENT_SERVICE_URL,
     changeOrigin: true,
-    pathRewrite: { "^/payment": "" },
+    pathRewrite: { "^/payment-service": "" },
+    on: {
+      proxyReq: fixRequestBody,
+    },
   })
 );
 
 router.use(
-  "/notification-service",  
+  "/notification-service",
   createProxyMiddleware({
     target: process.env.NOTIFICATION_SERVICE_URL,
     changeOrigin: true,

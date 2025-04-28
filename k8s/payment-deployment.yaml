@@ -23,6 +23,8 @@ spec:
               value: "5006"
             - name: MONGO_URI
               value: "mongodb+srv://krashmina612:ck1234@ck-cluster.ftvzrdo.mongodb.net/CK-DB?retryWrites=true&w=majority"
+            - name: STRIPE_SECRET_KEY
+              value: "sk_test_51PpYQgJ5VKYWP8GF018mGTxrqanbVl4w7Dbuv6ktJgcZ4915cps2aOewv8sGNxrPckBXd3mM37NoZSpXcukmu5DY00cxgqlWBmsk_test_51PpYQgJ5VKYWP8GF018mGTxrqanbVl4w7Dbuv6ktJgcZ4915cps2aOewv8sGNxrPckBXd3mM37NoZSpXcukmu5DY00cxgqlWBm"
             - name: RABBITMQ_URL
               value: "amqp://rabbitmq:5672"
 
