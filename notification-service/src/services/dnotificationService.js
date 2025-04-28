@@ -19,10 +19,10 @@ class NotificationService {
 
   // 2. Get unread notifications
   async getUnreadNotifications(driverId) {
-    return await DeliveryNotification.find({
+    return await DeliveryNotification.findOne({
       driver: driverId,
       unread: true
-    }).sort({ createdAt: -1 }); // Newest first
+    })
   }
 
   // 3. Mark as read

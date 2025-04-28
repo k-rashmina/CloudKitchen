@@ -14,6 +14,7 @@ const {
   findAvailableNearby,
   markAssigned,
   updateLocation,
+  getLocation
 } = require("../data-access/DriverDB");
 
 const client = new Client({});
@@ -58,6 +59,10 @@ const getAvailableDriversService = async () => {
 
 const updateDriverLocationService = async (driverId, coordinates) => {
   return await updateLocation(driverId, coordinates);
+};
+
+const getDriverLocationService = async (driverId) => {
+  return await getLocation(driverId);
 };
 
 const MonitorDeliveryJobs = async () => {
@@ -154,5 +159,6 @@ module.exports = {
   getAvailableDriversService,
   updateDriverLocationService,
   MonitorDeliveryJobs,
-  getDeliveryByOrderIdService
+  getDeliveryByOrderIdService,
+  getDriverLocationService
 };

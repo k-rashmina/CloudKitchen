@@ -8,7 +8,8 @@ const {
   getAvailableDriversCtrl,
   updateDriverLocationCtrl,
   createDriverCtrl,
-  getDeliveryByOrderCtrl
+  getDeliveryByOrderCtrl,
+  getDriverLocationCtrl
 } = require("./controllers/delivery-ctrl");
 
 router.post("/deliveries", createDeliveryCtrl);
@@ -20,5 +21,6 @@ router.get("/deliveryByOrder/:oid", getDeliveryByOrderCtrl);
 router.post("/driver", createDriverCtrl);
 router.get("/drivers/available", getAvailableDriversCtrl);
 router.put("/drivers/:id/location", updateDriverLocationCtrl);
+router.get("/drivers/:id/location", getDriverLocationCtrl);
 
 module.exports = router;

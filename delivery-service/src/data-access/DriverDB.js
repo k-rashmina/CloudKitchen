@@ -17,14 +17,14 @@ const updateLocation = async (driverId, coordinates) => {
   return await Driver.findByIdAndUpdate(
     driverId,
     {
-      currentLocation: {
-        type: "Point",
-        coordinates,
-      },
-      lastActive: new Date(),
+      currentLocation: coordinates
     },
     { new: true }
   );
+};
+
+const getLocation = async (driverId) => {
+  return await Driver.findById(driverId, "currentLocation");
 };
 
 module.exports = {
@@ -32,4 +32,5 @@ module.exports = {
   findAvailableNearby,
   markAssigned,
   updateLocation,
+  getLocation
 };
