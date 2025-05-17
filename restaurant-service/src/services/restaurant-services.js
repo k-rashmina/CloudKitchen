@@ -71,7 +71,7 @@ const deleteMenuItemService = async (menuItemId) => {
 const MonitorRestaurantJobs = async () => {
   try {
     cron.schedule("*/15 * * * * *", async () => {
-      console.log("🔍 Monitoring Restaurant Jobs");
+      // console.log("🔍 Monitoring Restaurant Jobs");
 
       const restaurantJobs = await getAllReadyRestaurantJobs();
       // console.log("restaurantJobs - ", restaurantJobs);
@@ -82,8 +82,10 @@ const MonitorRestaurantJobs = async () => {
         // console.log("job - ", job);
 
         //notification api call
-          const notificationResponse = await axios.post(
-            `${notificationServiceUrl}/api/notifications/order-confirmation`, job);
+        const notificationResponse = await axios.post(
+          `${notificationServiceUrl}/api/notifications/order-confirmation`,
+          job
+        );
 
         // delivery api call
         const deliveryResponse = await axios.post(

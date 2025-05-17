@@ -1,4 +1,5 @@
 const Delivery = require("../models/deliveryJob");
+// const User = require("../models/User");
 
 const createDelivery = async (data) => {
   const delivery = new Delivery(data);
@@ -25,15 +26,16 @@ const updateDeliveryJob = async (deliveryJob) => {
 };
 
 const getById = async (id) => {
-  return await Delivery.findById(id)
-    .populate("restaurantId")
-    // .populate("orderId")
-    // .populate("items.itemId");
+  return await Delivery.findById(id).populate("restaurantId");
+  // .populate("orderId")
+  // .populate("items.itemId");
 };
 
 const getByOrderId = async (orderId) => {
-  return await Delivery.findOne({orderId: orderId})
-    .populate("driverId")
+  return await Delivery.findOne({ orderId: orderId }).populate([
+    "driverId",
+    "customerId",
+  ]);
 };
 
 const getPendingDeliveries = async () => {
@@ -47,5 +49,5 @@ module.exports = {
   getById,
   getPendingDeliveries,
   updateDeliveryJob,
-  getByOrderId
+  getByOrderId,
 };
