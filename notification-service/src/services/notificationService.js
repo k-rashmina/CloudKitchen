@@ -48,7 +48,7 @@ class NotificationService {
       <!-- Body -->
       <div style="padding: 20px;">
         <p style="font-size: 16px;">Dear ${user.name},</p>
-        <p style="font-size: 16px;">Thank you for your order! We've prepared it and will deliver to you shortly.</p>
+        <p style="font-size: 16px;">Thank you for your order! Your order is ready and will deliver to you shortly.</p>
         
         <h3 style="color: #2c3e50; border-bottom: 1px solid #ecf0f1; padding-bottom: 8px;">Order Summary</h3>
         

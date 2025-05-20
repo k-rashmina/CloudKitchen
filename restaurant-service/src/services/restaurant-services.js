@@ -80,6 +80,7 @@ const MonitorRestaurantJobs = async () => {
         await setRestaurantJobStatusService(job._id, "done");
         console.log("Restaurant job status changed!");
         // console.log("job - ", job);
+        console.log(job);
 
         //notification api call
         const notificationResponse = await axios.post(
@@ -108,7 +109,7 @@ const MonitorRestaurantJobs = async () => {
       });
     });
   } catch (e) {
-    console.log(e.message);
+    // console.log("e.message");
   }
 };
 

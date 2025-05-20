@@ -12,6 +12,7 @@ const {
 const { getAllReadyRestaurantJobs } = require("../data-access/restaurant-dao");
 const axios = require("axios");
 const mongoose = require("mongoose");
+const RestaurantJob = require("../models/restaurantJob");
 
 
 const getAllRestaurantsCtrl = async (req, res) => {
@@ -153,6 +154,15 @@ const updateMenuItemCtrl = async (req, res) => {
   }
 };
 
+const updateRestaurantJobStatus = async (req, res) => {
+  try {
+    const updated = await RestaurantJob.findByIdAndUpdate(req.body._id, {status: req.body.status})
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 const deleteMenuItemCtrl = async (req, res) => {
   try {
     await deleteMenuItemService(req.params.id);
@@ -173,4 +183,5 @@ module.exports = {
   addMenuItemCtrl,
   updateMenuItemCtrl,
   deleteMenuItemCtrl,
+  updateRestaurantJobStatus
 };
